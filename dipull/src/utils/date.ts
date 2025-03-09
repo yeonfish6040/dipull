@@ -47,11 +47,12 @@ export const stayApplyErrorMessage = async (number: number, type: "stay" | "home
 
 export const isApplyAvail = async (number: number, type: "stay" | "homecoming" = "stay"): Promise<boolean> => {
   const grade = Math.floor(number / 1000);
-  const m = moment().tz("Asia/Seoul");
+  const m = moment().utcOffset("+0900");
   const avil = await (type === "stay" ? stayApplyTimes : homecomingApplyTimes)();
 
-  const week = moment(await getWeekStart(), "YYYY-MM-DD");
+  const week = moment(await getWeekStart(), "YYYY-MM-DD").utcOffset("+0900");
   console.log(week);
+  console.log(m);
   if (type === "stay")
     week.set({ hour: 18 });
   const end = week.clone().set({
