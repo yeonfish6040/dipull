@@ -7,7 +7,7 @@ export const checkWeekend = async (date: string): Promise<boolean> => {
 };
 
 export const getWeekStart = async (): Promise<string> => { 
-  const m = moment().utcOffset("+0900");
+  const m = moment().tz("Asia/Seoul");
   if (m.day() === 0 && m.hour() <= 18) m.subtract(1, "week");
   return m.startOf("week").format("YYYY-MM-DD");
 };
@@ -47,10 +47,10 @@ export const stayApplyErrorMessage = async (number: number, type: "stay" | "home
 
 export const isApplyAvail = async (number: number, type: "stay" | "homecoming" = "stay"): Promise<boolean> => {
   const grade = Math.floor(number / 1000);
-  const m = moment().utcOffset("+0900");
+  const m = moment().tz("Asia/Seoul");
   const avil = await (type === "stay" ? stayApplyTimes : homecomingApplyTimes)();
 
-  const week = moment(await getWeekStart(), "YYYY-MM-DD").utcOffset("+0900");
+  const week = moment(await getWeekStart(), "YYYY-MM-DD").tz("Asia/Seoul");
   console.log(week);
   console.log(m);
   if (type === "stay")
