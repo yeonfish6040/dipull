@@ -7,7 +7,7 @@ export const checkWeekend = async (date: string): Promise<boolean> => {
 };
 
 export const getWeekStart = async (): Promise<string> => { 
-  const m = moment().tz("Asia/Seoul");
+  const m = moment().utcOffset("+0900");
   if (m.day() === 0 && m.hour() <= 18) m.subtract(1, "week");
   return m.startOf("week").format("YYYY-MM-DD");
 };
@@ -16,9 +16,9 @@ const stayApplyTimes = async (): Promise<{
   [key: string]: { day: number; hour: number };
 }> => {
   return {
-    1: { day: 1, hour: 22 },
-    2: { day: 1, hour: 22 },
-    3: { day: 1, hour: 22 },
+    1: { day: 2, hour: 22 },
+    2: { day: 2, hour: 22 },
+    3: { day: 2, hour: 22 },
   } as {
     [key: string]: { day: number; hour: number };
   };
@@ -47,7 +47,7 @@ export const stayApplyErrorMessage = async (number: number, type: "stay" | "home
 
 export const isApplyAvail = async (number: number, type: "stay" | "homecoming" = "stay"): Promise<boolean> => {
   const grade = Math.floor(number / 1000);
-  const m = moment().tz("Asia/Seoul");
+  const m = moment().utcOffset("+0900");
   const avil = await (type === "stay" ? stayApplyTimes : homecomingApplyTimes)();
 
   const week = moment(await getWeekStart(), "YYYY-MM-DD").tz("Asia/Seoul");
